@@ -1,0 +1,36 @@
+---
+- name: Setup Hello Django project
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: Install required packages
+      become: true
+      apt:
+        name:
+          - python3
+          - python3-pip
+          - virtualenv
+          - git
+
+    - name: Create and activate virtual environment
+      become: true
+      command: python3 -m venv /path/to/project/venv
+
+    - name: Activate virtual environment
+      become: true
+      command: source /home/saurav/project_setup/venv/bin/activate
+
+    - name: Install Django
+      become: true
+      pip:
+        name: Django
+        virtualenv: /home/saurav/project_setup/venv
+
+    - name: Create Django project
+      become: true
+      command: django-admin startproject hello_django /home/saurav/project_setup
+
+    - name: Run Django development server
+      become: true
+      command: python /home/saurav/project_setup/hello_django/manage.py runserver
